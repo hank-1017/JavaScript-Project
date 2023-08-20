@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeWork 1</title>
+    <link rel="stylesheet" href="nav.css">
+    <style>
+        table {
+            width: 700px;
+            border: 3px solid orange;
+            background-color: #f4ffe5;
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 3px solid orange;
+            padding: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <!-- 導覽列 -->
+        <nav>
+            <ul>
+                <li><a href="HW1.html">九九乘法表</a></li>
+                <li><a href="HW2.html">Form Check</a></li>
+                <li><a href="HW3.html">星星點評</a></li>
+                <li><a href="HW4.html">廣告輪播</a></li>
+                <li><a href="HW5.html">日曆</a></li>
+                <li><a href="HW6.html">郵遞區號JS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div>
+        <h2>九九乘法表</h2>
+        <table id="tb1"></table>
+    </div>
+    <script>
+
+        const table = document.getElementById("tb1");
+        let htmls = "";
+        for (let i = 2; i < 10; i++) {
+
+            htmls += "<td>";
+
+            for (let j = 1; j < 10; j++) {
+                htmls += `${i} * ${j}=${i * j} <br>`;
+            }
+
+            htmls += "</td>";
+        }
+        table.innerHTML = htmls;
+
+    </script>
+
+</body>
+
+</html>

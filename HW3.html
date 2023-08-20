@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeWork 3</title>
+    <link rel="stylesheet" href="nav.css">
+    <style>
+        .stardiv {
+            text-align: center;
+            padding: 50px 0;
+            margin: 0;
+            background-color: rgb(227, 228, 183);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <!-- 導覽列 -->
+        <nav>
+            <ul>
+                <li><a href="HW1.html">九九乘法表</a></li>
+                <li><a href="HW2.html">Form Check</a></li>
+                <li><a href="HW3.html">星星點評</a></li>
+                <li><a href="HW4.html">廣告輪播</a></li>
+                <li><a href="HW5.html">日曆</a></li>
+                <li><a href="HW6.html">郵遞區號JS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <div class="stardiv">
+        <img id="idimg0" class="starc" src="images/star.gif" />
+        <img id="idimg1" class="starc" src="images/star.gif" />
+        <img id="idimg2" class="starc" src="images/star.gif" />
+        <img id="idimg3" class="starc" src="images/star.gif" />
+        <img id="idimg4" class="starc" src="images/star.gif" />
+        <h3>單擊星星可評分，雙擊星星重置</h3>
+        <h2 id="star-count">請評分</h2>
+    </div>
+    <script>
+        let stars = document.querySelectorAll("img.starc");
+        let starCount = 0; // 星星的總數
+        let clicked = false; // 是否點擊星星
+        let starCountDisplay = document.getElementById("star-count");
+
+        for (let star of stars) {
+            let starIndex = parseInt(star.id.substr(5)) + 1;
+
+            star.addEventListener("mouseover", () => {
+                if (!clicked) {
+                    highlightStars(starIndex);
+                }
+            });
+
+            star.addEventListener("mouseout", () => {
+                if (!clicked) {
+                    clearStars();
+                }
+            });
+
+            star.addEventListener("click", () => {
+                if (!clicked) {
+                    clicked = true;
+                    starCount = starIndex;
+                    starCountDisplay.textContent = "你的評分是: " + starCount + "顆星";
+                }
+            });
+
+            star.addEventListener('dblclick', () => {
+                if (clicked) {
+                    clicked = false;
+                    clearStars();
+                    starCountDisplay.textContent = "請評分";
+                }
+            });
+        }
+
+        function highlightStars(count) {
+            for (let i = 0; i < count; i++) {
+                document.getElementById("idimg" + i).src = "images/chngstar.gif";
+                starCountDisplay.textContent = "你點選了 " + count + " 顆星";
+            }
+        }
+
+        function clearStars() {
+            for (let star of stars) {
+                star.src = "images/star.gif";
+                starCountDisplay.textContent = "請評分";
+            }
+        }
+    </script>
+</body>
+
+</html>

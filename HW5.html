@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HomeWork 5</title>
+    <link rel="stylesheet" href="nav.css">
+    <style>
+        h2 {
+            /* font-family: 'Times New Roman', Times, serif; */
+            margin-top: 30px;
+            font-size: 24px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        select {
+            padding: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+
+
+        }
+
+        table {
+            width: 50%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: rgb(184, 163, 126);
+            color: #fff;
+        }
+
+        tr {
+            background-color: #f2f2f2;
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .d1 {
+            margin-left: 5%;
+            float: left;
+            width: 50%;
+        }
+
+        .d2 {
+            float: left;
+            width: 20%;
+            margin-left: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <!-- 導覽列 -->
+        <nav>
+            <ul>
+                <li><a href="HW1.html">九九乘法表</a></li>
+                <li><a href="HW2.html">Form Check</a></li>
+                <li><a href="HW3.html">星星點評</a></li>
+                <li><a href="HW4.html">廣告輪播</a></li>
+                <li><a href="HW5.html">日曆</a></li>
+                <li><a href="HW6.html">郵遞區號JS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <div class="d1">
+        <h2>月曆</h2>
+        <select id="year"></select>年
+
+        <select id="month"></select>月
+
+        <select id="day"></select>日
+        <br>
+        <br>
+        <table id="calendar"></table>
+    </div>
+    <div class="d2">
+        <h2>information</h2>
+        <p id="inf">請選擇年份</p>
+    </div>
+
+    <script>
+        // 選項
+        var yearOptions = "";
+        var monthOptions = "";
+        var dayOptions = "";
+        for (var y = 2010; y <= 2030; y++) {
+            yearOptions += "<option>" + y + "</option>";
+        }
+        document.getElementById("year").innerHTML = yearOptions;
+
+        // 選擇年份
+        document.getElementById("year").onchange = function () {
+            monthOptions = ""; // 清空月份
+            for (var m = 1; m <= 12; m++) {
+                monthOptions += "<option>" + m + "</option>";
+            }
+            document.getElementById("month").innerHTML = monthOptions;
+            generateCalendar(this.value, document.getElementById("month").value);
+            document.getElementById("inf").innerHTML = "請選擇月份";
+        }
+
+        // 選擇月份
+        document.getElementById("month").onchange = function () {
+            let year = document.getElementById("year").value;
+            let month = document.getElementById("month").value;
+            var daysInMonth = new Date(year, month, 0).getDate();
+            dayOptions = ""; // 清空日
+            for (var d = 1; d <= daysInMonth; d++) {
+                dayOptions += "<option>" + d + "</option>";
+            }
+            document.getElementById("day").innerHTML = dayOptions;
+            generateCalendar(document.getElementById("year").value, this.value);
+            document.getElementById("inf").innerHTML = "請選擇日期";
+        }
+        // 選擇了日
+        document.getElementById("day").onchange = function () {
+            document.getElementById("inf").innerHTML = "請選擇日期";
+            let year = document.getElementById("year").value;
+            let month = document.getElementById("month").value;
+            let day = document.getElementById("day").value;
+            document.getElementById("inf").innerHTML = "您選的日期為:" + year + "年" + month + "月" + day + "日";
+
+        }
+
+        // 生成月曆
+        function generateCalendar(year, month) {
+            var calendarTable = `<tr style="background-color: cornflowerblue;">
+                <th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th>
+                </tr>`;
+
+            // 當月 1號是星期幾
+            var firstDay = new Date(year, month - 1, 1).getDay();
+
+            // 當月總天數
+            var daysInMonth = new Date(year, month, 0).getDate();
+
+            calendarTable += "<tr>";
+
+            // 前置空格
+            for (var i = 0; i < firstDay; i++) {
+                calendarTable += "<td></td>";
+            }
+
+            // 當月天數
+            for (var i = 1; i <= daysInMonth; i++) {
+                calendarTable += "<td>" + i + "</td>";
+
+                if ((i + firstDay) % 7 == 0) {
+                    calendarTable += "</tr><tr>";
+                }
+            }
+
+            // 後置空格
+            for (var i = (firstDay + daysInMonth) % 7; i < 7; i++) {
+                calendarTable += "<td></td>";
+            }
+
+            calendarTable += "</tr>";
+
+            document.getElementById("calendar").innerHTML = calendarTable;
+
+        }
+
+        // 初始化
+        generateCalendar(2010, 1); 
+    </script>
+
+</body>
+
+</html>

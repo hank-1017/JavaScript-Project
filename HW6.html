@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>HomeWork 6</title>
+    <link rel="stylesheet" href="nav.css">
+    <style>
+        table {
+            float: left;
+            border: 2px solid orange;
+            border-collapse: collapse;
+            margin-right: 5%;
+        }
+
+        td,
+        tr {
+            border: 2px solid orange;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <!-- 導覽列 -->
+        <nav>
+            <ul>
+                <li><a href="HW1.html">九九乘法表</a></li>
+                <li><a href="HW2.html">Form Check</a></li>
+                <li><a href="HW3.html">星星點評</a></li>
+                <li><a href="HW4.html">廣告輪播</a></li>
+                <li><a href="HW5.html">日曆</a></li>
+                <li><a href="HW6.html">郵遞區號JS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h2>台灣行政區郵遞區號</h2>
+
+    <table id="data-table"></table>
+
+    <select id="districts">
+        <option value="">請選擇縣市</option>
+    </select>
+
+    <select id="areas">
+        <option value="">請選擇鄉鎮區</option>
+    </select>
+
+    <script src="taiwan_districts.js"></script>
+
+    <script>
+        //表格
+        const table = document.getElementById('data-table');
+
+        let prevCounty = '';
+
+        data.forEach(county => {
+
+            if (county.name !== prevCounty) {
+                // 新的縣市,建立新的 row
+                prevCounty = county.name;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+      <td rowspan="${county.districts.length + 1}">${county.name}</td> `;
+                table.appendChild(row);
+            }
+
+            county.districts.forEach(district => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${district.zip}</td>
+                                 <td>${district.name}</td>`;
+                table.appendChild(row);
+
+            });
+
+        });
+
+
+        //選單
+        // 取得縣市選項
+        let countyOptions = data.map((county) => {
+            return `<option value="${county.name}">${county.name}</option>`;
+        });
+
+        // 插入縣市選項到選單
+        let countySelect = document.getElementById('districts');
+        countySelect.innerHTML = "<option value=''>請選擇縣市</option>";//初始化選單
+        countySelect.innerHTML += countyOptions;
+
+        // 選擇縣市時,動態產生該縣市的區域選項
+        countySelect.addEventListener('change', (e) => {
+            let county = e.target.value;
+            let areas = data.find((c) => c.name === county).districts;
+            let areaOptions = areas.map((area) => {
+                return `<option value="${area.name}">${area.zip} ${area.name}</option>`;
+            });
+            let areaSelect = document.getElementById('areas');
+            areaSelect.innerHTML = "<option value=''>請選擇鄉鎮區</option>";//初始化選單
+            areaSelect.innerHTML += areaOptions;//插入選單中
+        });
+
+    </script>
+
+</body>
+
+</html>

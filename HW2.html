@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 2</title>
+    <link rel="stylesheet" href="nav.css">
+    <style>
+        fieldset {
+            background-color: #f4ffe5;
+            width: 500px;
+            border: 3px solid orange;
+            border-radius: 15px;
+            margin: 15px;
+        }
+
+        legend {
+            margin-left: 50px;
+            color: cadetblue;
+        }
+
+        .st1 {
+            width: 450px;
+            border-bottom: 3px dashed gray;
+            margin: 20px;
+            padding-bottom: 10px;
+        }
+
+        .sub {
+            width: 450px;
+            margin: 20px;
+            text-align: right;
+        }
+
+        .st1 p {
+            width: 450px;
+            font-size: 8px;
+            color: gray;
+            font-style: italic;
+        }
+
+        */ textarea {
+            resize: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <!-- 導覽列 -->
+        <nav>
+            <ul>
+                <li><a href="HW1.html">九九乘法表</a></li>
+                <li><a href="HW2.html">Form Check</a></li>
+                <li><a href="HW3.html">星星點評</a></li>
+                <li><a href="HW4.html">廣告輪播</a></li>
+                <li><a href="HW5.html">日曆</a></li>
+                <li><a href="HW6.html">郵遞區號JS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <form action="#" method="get" enctype="multipart/form-data">
+        <fieldset>
+            <legend>Form Check</legend>
+            <div class="st1">
+                <label for="name1" class="t1">姓名:</label><input type="text" id="name1" name="name" autocomplete="off"
+                    size="10">
+                <span id="nameSpan"></span>
+                <br>
+                <p>姓名必須至少兩個中文字。</p>
+            </div>
+
+            <div class="st1">
+                <label for="pwd1" class="t1">密碼:</label> <input type="password" id="pwd1" name="pwd" required>
+                <span id="idsp"></span>
+                <br>
+                <p>長度必須大於6位數，須包含英數字。</p>
+            </div>
+            <div class="st1">
+                <label for="" class="t1">日期:</label>
+                <input type="text" name="date" id="date1" value="2000/01/01">
+                <span id="dateSpan"></span>
+                <br>
+                <p>格式: 西元年/月/日 ex.2000/1/1</p>
+            </div>
+
+        </fieldset>
+
+    </form>
+
+
+    <script>
+        document.getElementById("name1").addEventListener("blur", checkName);
+        document.getElementById("pwd1").addEventListener("blur", checkPwd);
+        document.getElementById("date1").addEventListener("blur", checkDate);
+
+        function checkPwd() {
+            let thePwdObj = document.getElementById("pwd1");
+            let thePwdObjVal = thePwdObj.value;
+
+            let sp = document.getElementById("idsp")
+            let thePwdObjValLen = thePwdObjVal.length;
+            let ch, flag1 = false, flag2 = false, flag3 = false;
+
+            if (thePwdObjVal == "") {
+                sp.innerHTML = '<span style="color:red;">X 密碼為必填!!</span>';
+                // sp.innerHTML = "<span style='color:red;''><img src='Images/error.png'>密碼為必填!!</span>";
+            } else if (thePwdObjValLen >= 6) {
+                for (let i = 0; i < thePwdObjValLen; i++) {
+                    ch = thePwdObjVal.charAt(i).toUpperCase();
+                    if (ch >= 'A' && ch <= 'Z') {
+                        flag1 = true;
+                    } else if (ch >= '0' && ch <= '9') {
+                        flag2 = true;
+                    }
+                    if (flag1 && flag2) {
+                        break;
+                    }
+                }
+
+                if (flag1 && flag2) {
+                    sp.innerHTML = '<span style="color:green;">V 密碼格式正確</span>';
+                } else {
+                    sp.innerHTML = '<span style="color:red;">X 密碼必須包含英文和數字</span>';
+                }
+            } else {
+                sp.innerHTML = '<span style="color:red;">X 密碼必須大於等於6字</span>';
+            }
+        }
+
+
+        function checkName() {
+
+            let nameObj = document.getElementById("name1");
+            let nameObjVal = nameObj.value;
+            let nameSp = document.getElementById("nameSpan");
+
+            let isChinese = true;
+            let chiCount = 0;
+
+            for (let i = 0; i < nameObjVal.length; i++) {
+                let ch = nameObjVal.charAt(i);
+                chiCount++;
+                // 檢查每個字的Unicode
+                if (!(ch >= '\u4e00' && ch <= '\u9fff')) {
+                    isChinese = false;
+                    break;
+                }
+            }
+
+            if (nameObjVal === "") {
+                nameSp.innerHTML = '<span style="color:red;">X 姓名為必填!</span>';
+
+            } else if (!isChinese) {
+                nameSp.innerHTML = '<span style="color:red;">X 姓名必須為中文字!!</span>';
+
+            } else if (chiCount < 2) {
+                nameSp.innerHTML = '<span style="color:red;">X 姓名必須至少兩個中文字!!</span>';
+
+            } else {
+                nameSp.innerHTML = '<span style="color:green;">V 姓名格式正確!!</span>';
+            }
+
+        }
+
+        function checkDate() {
+
+            let dateObjVal = document.getElementById("date1").value;
+            let dateSp = document.getElementById("dateSpan");
+
+            let dateArr = dateObjVal.split("/");
+            let year = parseInt(dateArr[0]);
+            let month = parseInt(dateArr[1]);
+            let day = parseInt(dateArr[2]);
+
+            let date = new Date(year, month - 1, day);
+
+            if (dateObjVal === "") {
+                dateSp.innerHTML = '<span style="color:red;">X 日期不可為空!!!</span>';
+            } else if (date.getFullYear() == year &&
+                (date.getMonth() + 1) == month &&
+                date.getDate() == day) {
+                dateSp.innerHTML = '<span style="color:green;">V 日期格式正確!</span>';
+            } else {
+                dateSp.innerHTML = '<span style="color:red;">X 日期格式錯誤!</span>';
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HomeWork 4</title>
+    <link rel="stylesheet" href="nav.css">
+    <style>
+        .imgs {
+            width: 100%;
+        }
+
+        .imgdiv {
+            width: 70%;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <!-- 導覽列 -->
+        <nav>
+            <ul>
+                <li><a href="HW1.html">九九乘法表</a></li>
+                <li><a href="HW2.html">Form Check</a></li>
+                <li><a href="HW3.html">星星點評</a></li>
+                <li><a href="HW4.html">廣告輪播</a></li>
+                <li><a href="HW5.html">日曆</a></li>
+                <li><a href="HW6.html">郵遞區號JS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <div class="imgdiv">
+        <a href="https://www.starbucks.com.tw/coffee/our-coffees/product.jspx?id=448" id="imga">
+            <img class="imgs" id="pic" src="images/1.jpg" />
+        </a>
+        <p> <span id="curIndex">1</span> / <span id="total">5</span> </p>
+        <button id="prev">Prev</button>
+        <button id="pause">Pause</button>
+        <button id="next">Next</button>
+    </div>
+
+
+    <script>
+
+        // 圖片陣列
+        let images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg'];
+        let hrefs = ['https://www.starbucks.com.tw/coffee/our-coffees/product.jspx?id=448',
+            'https://www.starbucks.com.tw/products/food.jspx',
+            'https://www.starbucks.com.tw/products/collection.jspx',
+            'https://www.starbucks.com.tw/products/drinks.jspx',
+            'https://www.starbucks.com.tw/products/food/festival/23_mid-autumn/index.jspx']
+
+        // 紀錄目前顯示圖片的索引
+        let index = 0;
+
+        // 控制圖片輪播的計時器
+        let interval;
+
+        let paused = false;
+
+        // 變更圖片的函式
+        function changeImage() {
+            // 增加索引值以顯示下一張圖片
+            index++;
+
+            // 若索引值超過陣列長度，則重設為 0
+            if (index >= images.length) {
+                index = 0;
+            }
+
+            // 更新圖片的 src 屬性，顯示下一張圖片
+            document.getElementById("pic").src = "images/" + images[index];
+            //對應圖片超連結
+            document.getElementById("imga").href = hrefs[index];
+
+            // 更新當前圖片索引的顯示
+            document.getElementById("curIndex").textContent = index + 1;
+        }
+
+        // 啟動圖片輪播的函式
+        function start() {
+            // 使用 setInterval 設定每3秒執行一次
+            interval = setInterval(changeImage, 3000);
+        }
+
+        // 呼叫start，開始圖片輪播
+        start();
+
+        document.getElementById("next").addEventListener("click", () => {
+            changeImage();
+        });
+
+        // 切換到上一張圖片
+        document.getElementById("prev").addEventListener("click", () => {
+            // 減少索引值以顯示上一張圖片
+            index--;
+
+            // 若索引值小於 0，則重設為陣列最後一個元素的索引，從最後一張圖片開始往前切換
+            if (index < 0) {
+                index = images.length - 1;
+            }
+
+            // 更新圖片的 src 屬性，顯示上一張圖片
+            document.getElementById("pic").src = "images/" + images[index];
+
+            // 更新當前圖片索引的顯示
+            document.getElementById("curIndex").textContent = index + 1;
+        });
+
+        // 當按下 "Pause" 按鈕時，暫停或播放圖片輪播
+        document.getElementById("pause").addEventListener("click", () => {
+            let button = document.getElementById("pause");
+
+            if (button.textContent == "Pause") {
+                clearInterval(interval);
+                button.textContent = "Play";
+            } else {
+                interval = setInterval(changeImage, 3000);
+                button.textContent = "Pause";
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
